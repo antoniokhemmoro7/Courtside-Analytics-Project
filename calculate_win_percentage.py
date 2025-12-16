@@ -57,7 +57,12 @@ for team_id in team_stats:
 # Print results (sorted by win percentage)
 sorted_teams = sorted(team_win_pct.items(), key=lambda x: x[1], reverse=True)
 
-print("Win percentage by team (based on games in DB):")
-for team_id, win_pct in sorted_teams:
-    name = team_names.get(team_id, str(team_id))
-    print(f"{name}: {win_pct:.3f}")
+# Write results to output file
+with open("team_win_percentage_results.txt", "w") as f:
+    f.write("Win percentage by team (based on games in DB):\n")
+    f.write("--------------------------------------------\n")
+    for team_id, win_pct in sorted_teams:
+        name = team_names.get(team_id, str(team_id))
+        f.write(f"{name}: {win_pct:.3f}\n")
+
+print("team_win_percentage_results.txt created successfully.")
