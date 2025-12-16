@@ -37,7 +37,6 @@ for team_id, team_name in cur.fetchall():
 cur.execute("""
     SELECT
         g.game_date,
-        g.game_id,
         g.home_team_id,
         g.away_team_id,
         gl.latitude,
@@ -53,7 +52,7 @@ conn.close()
 # Build per-team game sequence (home + away)
 team_games = {}
 
-for game_date, game_id, home_id, away_id, lat, lon in rows:
+for game_date, home_id, away_id, lat, lon in rows:
     # This location applies to BOTH teams (they both played here)
     if home_id not in team_games:
         team_games[home_id] = []
@@ -84,7 +83,12 @@ for team_id, games in team_games.items():
 # Sort teams by total travel distance (descending)
 sorted_teams = sorted(team_travel.items(), key=lambda x: x[1], reverse=True)
 
-print("Travel distance by team (based on games in your DB):")
-for team_id, miles in sorted_teams:
-    name = team_name_lookup.get(team_id, str(team_id))
-    print(f"{name}: {miles:.2f} miles")
+# Write results to output file 
+with open("team_travel_results.txt", "w") as f:
+    f.write("Travel distance by team (based on games in your DB):\n")
+    f.write("--------------------------------------------------\n")
+    for team_id, miles in sorted_teams:
+        name = team_name_lookup.get(team_id, str(team_id))
+        f.write(f"{name}: {miles:.2f} miles\n")
+
+print("team_travel_results.txt created successfully.")
