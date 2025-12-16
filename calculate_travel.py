@@ -32,7 +32,7 @@ team_name_lookup = {}
 for team_id, team_name in cur.fetchall():
     team_name_lookup[team_id] = team_name
 
-# Pull EVERY game from your DB and attach a location to it:
+# Pull EVERY game from DB and attach location to it:
 # location = home team city coords (where the game was played)
 cur.execute("""
     SELECT
@@ -63,7 +63,7 @@ for game_date, game_id, home_id, away_id, lat, lon in rows:
     team_games[home_id].append((game_date, lat, lon))
     team_games[away_id].append((game_date, lat, lon))
 
-# Sort each team's games by date (important)
+# Sort each team's games by date 
 for team_id in team_games:
     team_games[team_id].sort(key=lambda x: x[0])
 
